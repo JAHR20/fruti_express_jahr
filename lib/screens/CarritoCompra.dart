@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class CarritoCompra extends StatefulWidget {
   const CarritoCompra({super.key});
-
   @override
   State<CarritoCompra> createState() => _CarritoCompra();
 }
@@ -12,6 +11,12 @@ class _CarritoCompra extends State<CarritoCompra> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Carrito de compras",
           style: TextStyle(

@@ -82,11 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'carrito');
+              Navigator.pushNamed(context, '/carrito');
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             child: Text(
-              "Boton de prueba",
+              "Boton de prueba para ir al carrito",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
