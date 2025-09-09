@@ -14,6 +14,12 @@ class _CategoriafrutasScreen extends State<CategoriafrutasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           "Frutas",
           style: TextStyle(
@@ -23,35 +29,6 @@ class _CategoriafrutasScreen extends State<CategoriafrutasScreen> {
           ),
         ),
         backgroundColor: Color.fromARGB(255, 12, 75, 193),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: FrutasData.ofertasDelDia.length,
-          itemBuilder: (context, index) {
-            final fruta = FrutasData.ofertasDelDia[index];
-            return CardFruta(
-              titulo: fruta.titulo,
-              precio: fruta.precio,
-              imagen: fruta.imagen,
-              onAgregar: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${fruta.titulo} agregado al carrito'),
-                    backgroundColor: Colors.green,
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
-            );
-          },
-        ),
       ),
     );
   }
