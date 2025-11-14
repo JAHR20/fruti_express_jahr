@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fruti_express_jahr/models/Producto.dart';
 
 class CardOferta extends StatelessWidget {
-  final String titulo;
-  final String precio;
-  final String imagen;
-  final String descuento;
+  final Producto producto;
   final VoidCallback? onTap;
 
-  const CardOferta({
-    Key? key,
-    required this.titulo,
-    required this.precio,
-    required this.imagen,
-    required this.descuento,
-    this.onTap,
-  }) : super(key: key);
+  const CardOferta({Key? key, required this.producto, this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool conDescuento = producto.descuento > 0;
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -31,32 +24,53 @@ class CardOferta extends StatelessWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
+                        child: Image.asset(
+                          producto.imagen,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[200],
+                              child: Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey[400],
+                                size: 50,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                    child: Image.asset(
-                      imagen,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.transparent,
-                          child: Icon(
-                            Icons.image_not_supported,
-                            color: Colors.transparent,
-                            size: 50,
+                    if (conDescuento)
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            "%${producto.descuento}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
               Expanded(
@@ -68,7 +82,7 @@ class CardOferta extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        titulo,
+                        producto.titulo,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -77,39 +91,33 @@ class CardOferta extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              precio,
-                              style: TextStyle(
-                                color: Colors.green[600],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
+                      if (conDescuento) ...[
+                        Text(
+                          "\$${producto.precioConDescuento.toStringAsFixed(2)}",
+                          style: TextStyle(
+                            color: Colors.green[600],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              descuento,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                        ),
+                        Text(
+                          "\$${producto.precio.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 13,
                           ),
-                        ],
-                      ),
+                        ),
+                      ] else ...[
+                        Text(
+                          "\$${producto.precio.toStringAsFixed(2)}",
+                          style: TextStyle(
+                            color: Colors.green[600],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
